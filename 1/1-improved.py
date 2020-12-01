@@ -13,7 +13,6 @@ def get_input():
 def calculate_expenses(expenses, n):
     for combi in itertools.combinations(expenses, n):
         if sum(combi) == 2020:
-
             print("Found product: {}".format(math.prod(combi)))
 
 
