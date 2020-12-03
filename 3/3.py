@@ -2,21 +2,17 @@ from aocd import data
 
 
 def get_input():
-    processed_data = []
-    for line in data.splitlines():
-        processed_data.append(line)
-    return processed_data
+    return [line for line in data.splitlines()]
 
 
 def traverse(forest, path):
     trees = 0
     xcoord = 0
     ycoord = 0
-    xmax = len(forest[0])
     while ycoord < len(forest):
         if forest[ycoord][xcoord] == "#":
             trees += 1
-        xcoord = (xcoord + path[0]) % xmax
+        xcoord = (xcoord + path[0]) % len(forest[0])
         ycoord = ycoord + path[1]
     return trees
 
