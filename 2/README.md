@@ -1,6 +1,6 @@
 # AoC - Day 2
 
-[https://adventofcode.com/2020/day/2](https://adventofcode.com/2020/day/1)
+[https://adventofcode.com/2020/day/2](https://adventofcode.com/2020/day/2)
 
 I took a straightforward approach using regular expressions to parse the input, and some simple logic to evaluate compliance with the policies.
 
