@@ -111,8 +111,8 @@ def simple_fields(documents, validate_flag):
                 count += 1
         elif len(fields) == 7:
             def func(x): return re.match('cid:', x)
-            testo = list(map(func, fields))
-            if not numpy.any(testo):
+            cid_map = list(map(func, fields))
+            if not numpy.any(cid_map):
                 if validate_flag:
                     if validate(fields):
                         count += 1
