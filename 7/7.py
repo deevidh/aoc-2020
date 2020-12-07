@@ -21,7 +21,7 @@ def get_input():
     return [rule for rule in data.split("\n")]
 
 
-def build_dict(rawrules: list) -> dict:
+def build_rule_dict(rawrules: list) -> dict:
     rule_dict = {}
     for rawrule in rawrules:
         parts = rawrule.split("contain")
@@ -32,19 +32,14 @@ def build_dict(rawrules: list) -> dict:
             if "no other" in naughty_child:
                 bag_dict = "none"
                 continue
-            nchild = child_re.match(naughty_child)[1]
-            child = child_re.match(naughty_child)[2]
-            bag_dict[child] = nchild
+            bag_dict[child_re.match(naughty_child)[2]] = child_re.match(naughty_child)[1]
         rule_dict[parent] = bag_dict
     return rule_dict
 
 
 def one_level_search(rule_dict: dict, name: str) -> list:
-    parent_list = []
-    for item in rule_dict:
-        if rule_dict[item] != "none" and name in rule_dict[item].keys():
-            parent_list.append(item)
-    return parent_list
+    return [item for item in rule_dict if rule_dict[item] != "none"
+            and name in rule_dict[item].keys()]
 
 
 def search_dict(rule_dict: dict, name: str) -> list:
@@ -62,25 +57,19 @@ def search_dict(rule_dict: dict, name: str) -> list:
 
 # Returns count inclusive of the specified bag, so you may need to subtract 1
 def count_children(rule_dict: dict, name: str) -> int:
-    total = 0
     if rule_dict[name] == "none":
         return 1
-    children = rule_dict[name]
-    for child in children:
-        n = int(children[child])
-        nn = count_children(rule_dict, child)
-        total += n * nn
-        type(total)
-    return total + 1
+    return (1 + sum(int(rule_dict[name][child])*count_children(rule_dict, child)
+            for child in rule_dict[name]))
 
 
 rawrules = get_input()
-rule_dict = build_dict(rawrules)
+rule_dict = build_rule_dict(rawrules)
 
 # Part 1
 bag_list = search_dict(rule_dict, "shiny gold")
 print("Part 1: {}".format(len(bag_list)))
 
 # Part 2
-total = count_children(rule_dict, "shiny gold")
-print("Part 2: {}".format(total - 1))
+total_bags = count_children(rule_dict, "shiny gold")
+print("Part 2: {}".format(total_bags - 1))
